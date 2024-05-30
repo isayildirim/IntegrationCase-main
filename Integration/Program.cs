@@ -22,7 +22,7 @@ public abstract class Program
 
         Console.WriteLine("Everything recorded:");
 
-        service.GetAllItems().ForEach(Console.WriteLine);
+        service.GetAllItems().Result.ForEach(Console.WriteLine);
 
         Console.ReadLine();
     }

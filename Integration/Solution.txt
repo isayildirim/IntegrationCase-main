@@ -1,0 +1,9 @@
+Single Server Scenario
+This solution prevents the same content from being recorded when more than one content is tried to be recorded at the same time.
+It allows different contents to be processed simultaneously while preventing multiple recordings.
+This approach was made to increase performance and prevent unnecessary waiting.
+
+Changes made in the service layer;
+ConcurrentDictionary Added: Allows simultaneous checking of contents.
+Use of Lock Mechanism: During the content saving process, a lock mechanism has been added to prevent the same content from being saved more than once.
+The GetAllItems method used in the Service layer has been made asynchronous.
