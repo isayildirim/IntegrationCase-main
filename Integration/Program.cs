@@ -1,4 +1,5 @@
 ﻿using Integration.Service;
+using Microsoft.Extensions.Configuration;
 
 namespace Integration;
 
@@ -6,8 +7,8 @@ public abstract class Program
 {
     public static void Main(string[] args)
     {
-        var service = new ItemIntegrationService();
-        
+        var service = new ItemIntegrationService(GetRedisConnection());
+
         ThreadPool.QueueUserWorkItem(_ => service.SaveItem("a"));
         ThreadPool.QueueUserWorkItem(_ => service.SaveItem("b"));
         ThreadPool.QueueUserWorkItem(_ => service.SaveItem("c"));
@@ -22,8 +23,18 @@ public abstract class Program
 
         Console.WriteLine("Everything recorded:");
 
-        service.GetAllItems().ForEach(Console.WriteLine);
+        service.GetAllItems().Result.ForEach(Console.WriteLine);
 
         Console.ReadLine();
+    }
+
+    private static String GetRedisConnection()
+    {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .Build();
+
+        return configuration["Redis:ConnectionString"] ?? "localhost:6379";
     }
 }

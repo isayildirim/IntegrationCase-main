@@ -1,0 +1,16 @@
+Distributed System Scenario
+This solution prevents the same content from being saved multiple times by using Redis cache.
+It allows parallel processing of different contents.
+Data integrity is protected and performance is increased by using the Redis lock mechanism with the LockTake and LockRelease methods.
+This structure ensures data consistency in distributed systems.
+
+Lock Mechanism:
+A lock mechanism is used on Redis with lockKey and lockToken. This prevents the same content from being recorded at the same time.
+The LockTake method takes a lock using the specified key and duration. If the lock cannot be obtained, the transaction is rejected and an error message is returned.
+
+Duplicate Check and Save:
+Once the lock is obtained, it is checked whether the content has already been saved. If the content is already saved, an error message is returned.
+If the content is not saved, the content is saved by calling the SaveItem method and a success message is returned.
+
+Lock Release:
+Once the process is complete, the lock is released.
